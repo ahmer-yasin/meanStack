@@ -10,12 +10,11 @@ exports.signUp=function(req,res,next){
     if(!req.body.email || !req.body.password) return  res.status(400).json({msg: "Email and Password can't be blank"});
     if (!isEmail(req.body.email)) return res.status(400).json({msg: 'Email is invalid'});
     if (req.body.password.length < 4) return  res.status(400).json({msg: 'Password must be at least 4 characters long'});
-    var User = new User({
-        firstName:req.body.firstName,
-        lastName:req.body.lastName,
-        email: req.body.email,
-        password: req.body.password
-    });
+    var User = new User();
+    User.firstName = req.body.firstName;
+    User.lastName = req.body.lastName;
+    User.email = req.body.email;
+    User.password = req.body.password;
     User.findOne({email:req.body.email},function(err,exit){
         if(err){
             return next(err)
@@ -26,8 +25,10 @@ exports.signUp=function(req,res,next){
         User.save(function(err){
             if(err){
                 return next(err);
+            }else{
+                res.status(200).json({msg:'register successfully'})
             }
-            res.status(200).json({msg:'register successfully'})
+
         })
     })
 

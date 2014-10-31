@@ -54,8 +54,35 @@ router.get('/', function(req, res) {
     res.end('Helllo world');
     //res.json({ message: 'hooray! welcome to our api!' });
 });
-router.post('/signUp',userfunc.signUp);
+var person = {
+    name:'',
+    last:'',
+    email:'',
+    pass:''
+}
+//router.post('/signUp',userfunc.signUp);
+router.post('/signUp',function(req,res){
+    if(!req.body.email && !req.body.pass){
+        res.send('Please Enter email and password');
+        return;
+    }else if(req.body.email && req.body.pass){
+        person.name = req.body.name;
+        person.last = req.body.last;
+        person.email = req.body.email;
+        person.pass = req.body.pass;
+        res.send(person);
+        res.end('you are successfully registerd');
+    }
+});
+router.get('/login',function(req,res){
+    if(!req.query.email || !req.query.pass){
+        res.send('please enter valid user name or password');
+    }else if(req.query.email == person.email && req.query.pass == person.pass){
+        res.send('WellCome you Are login')
+        res.end('WellCome you Are login');
+    }
 
+})
 
 // more routes for our API will happen here
 // REGISTER OUR ROUTES -------------------------------
